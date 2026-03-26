@@ -1,0 +1,55 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-gray-50 text-gray-900 font-sans;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-fpl-green text-fpl-purple font-bold px-6 py-3 rounded-lg hover:brightness-90 transition-all duration-200 cursor-pointer;
+  }
+
+  .btn-secondary {
+    @apply bg-fpl-purple text-fpl-green font-bold px-6 py-3 rounded-lg hover:brightness-125 transition-all duration-200 cursor-pointer border border-fpl-green;
+  }
+
+  .card {
+    @apply bg-white rounded-xl shadow-sm border border-gray-100 p-4;
+  }
+
+  .stat-label {
+    @apply text-xs text-gray-500 uppercase tracking-wide font-medium;
+  }
+
+  .stat-value {
+    @apply text-lg font-bold text-gray-900;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+  background: #963cff;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #37003c;
+}
+
+/* Difficulty badge animations */
+.diff-badge {
+  transition: transform 0.1s ease;
+}
+.diff-badge:hover {
+  transform: scale(1.1);
+}
