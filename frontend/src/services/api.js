@@ -1,4 +1,6 @@
-const BASE_URL = '/api';
+// In development, Vite proxies /api → localhost:3001
+// In production, VITE_API_URL points to the deployed backend
+const BASE_URL = (import.meta.env.VITE_API_URL || '') + '/api';
 
 const get = async (url) => {
   const res = await fetch(url);
