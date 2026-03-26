@@ -204,7 +204,7 @@ export default function Home() {
     <div>
       {/* Hero */}
       <div className="bg-fpl-purple text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-20 text-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 pb-10 sm:py-20 text-center">
           <div className="inline-flex items-center gap-2 bg-fpl-green/20 border border-fpl-green/40 rounded-full px-4 py-1.5 mb-6">
             <span className="w-2 h-2 rounded-full bg-fpl-green animate-pulse" />
             <span className="text-fpl-green text-sm font-medium">2025/26 Season • Live Data</span>
@@ -246,7 +246,7 @@ export default function Home() {
             {/* ── Team ID tab ── */}
             {tab === 'id' && (
               <div>
-                <form onSubmit={handleLoadById} className="flex gap-2">
+                <form onSubmit={handleLoadById} className="flex flex-col sm:flex-row gap-2">
                   <input
                     type="number"
                     value={teamId}
@@ -258,7 +258,7 @@ export default function Home() {
                   <button
                     type="submit"
                     disabled={loading || dataLoading || !teamId}
-                    className="btn-primary whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="btn-primary whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed w-full sm:w-auto"
                   >
                     {loading ? '…' : 'Load'}
                   </button>

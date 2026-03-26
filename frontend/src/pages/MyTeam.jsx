@@ -196,7 +196,7 @@ export default function MyTeam() {
               setLoading(false);
             }
           }}
-          className="flex gap-2"
+          className="flex flex-col sm:flex-row gap-2"
         >
           <input
             type="number"
@@ -205,7 +205,7 @@ export default function MyTeam() {
             placeholder="Team ID"
             className="flex-1 px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:border-fpl-light-purple"
           />
-          <button type="submit" disabled={loading} className="btn-primary">
+          <button type="submit" disabled={loading} className="btn-primary w-full sm:w-auto">
             {loading ? '…' : 'Load'}
           </button>
         </form>
@@ -242,7 +242,7 @@ export default function MyTeam() {
             <span className="font-medium">GW{currentGW}</span>
           </p>
         </div>
-        <div className="flex gap-3">
+        <div className="flex gap-3 flex-wrap">
           <Link to="/transfers" className="btn-primary text-sm">
             Transfer Suggestions →
           </Link>
