@@ -15,23 +15,30 @@ export function FPLProvider({ children }) {
   // Load FPL bootstrap data + check Google session on mount
   useEffect(() => {
     const load = async () => {
+      // FPL data — required, show error if this fails
       try {
-        const [bsData, fixturesData, authData] = await Promise.all([
+        const [bsData, fixturesData] = await Promise.all([
           fetchBootstrap(),
           fetchFixtures(),
-          fetchAuthUser(),
         ]);
         setBootstrap(bsData);
         setFixtures(fixturesData);
         const current = bsData.events.find((e) => e.is_current);
         const next    = bsData.events.find((e) => e.is_next);
         setCurrentGW((current || next || bsData.events[0])?.id || 1);
-        if (authData.user) setGoogleUser(authData.user);
       } catch (err) {
         setError('Failed to load FPL data. Make sure the backend server is running.');
         console.error(err);
       } finally {
         setLoading(false);
+      }
+
+      // Auth check — optional, never blocks the app
+      try {
+        const authData = await fetchAuthUser();
+        if (authData?.user) setGoogleUser(authData.user);
+      } catch (err) {
+        // Auth failure is non-fatal — user just won't be signed in
       }
     };
     load();
