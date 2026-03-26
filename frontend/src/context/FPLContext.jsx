@@ -1,28 +1,32 @@
 import { createContext, useContext, useState, useEffect, useCallback, useMemo } from 'react';
-import { fetchBootstrap, fetchFixtures, fetchEntry, fetchPicks } from '../services/api';
+import { fetchBootstrap, fetchFixtures, fetchEntry, fetchPicks, fetchAuthUser, saveTeamToAccount } from '../services/api';
 
 const FPLContext = createContext(null);
 
 export function FPLProvider({ children }) {
-  const [bootstrap, setBootstrap] = useState(null);
-  const [fixtures, setFixtures] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [userTeam, setUserTeam] = useState(null);
-  const [currentGW, setCurrentGW] = useState(null);
+  const [bootstrap, setBootstrap]   = useState(null);
+  const [fixtures, setFixtures]     = useState([]);
+  const [loading, setLoading]       = useState(true);
+  const [error, setError]           = useState(null);
+  const [userTeam, setUserTeam]     = useState(null);
+  const [currentGW, setCurrentGW]   = useState(null);
+  const [googleUser, setGoogleUser] = useState(null); // { name, email, picture, fplTeamId }
 
+  // Load FPL bootstrap data + check Google session on mount
   useEffect(() => {
     const load = async () => {
       try {
-        const [bsData, fixturesData] = await Promise.all([
+        const [bsData, fixturesData, authData] = await Promise.all([
           fetchBootstrap(),
           fetchFixtures(),
+          fetchAuthUser(),
         ]);
         setBootstrap(bsData);
         setFixtures(fixturesData);
         const current = bsData.events.find((e) => e.is_current);
-        const next = bsData.events.find((e) => e.is_next);
+        const next    = bsData.events.find((e) => e.is_next);
         setCurrentGW((current || next || bsData.events[0])?.id || 1);
+        if (authData.user) setGoogleUser(authData.user);
       } catch (err) {
         setError('Failed to load FPL data. Make sure the backend server is running.');
         console.error(err);
@@ -34,7 +38,7 @@ export function FPLProvider({ children }) {
   }, []);
 
   const loadTeam = useCallback(
-    async (teamId) => {
+    async (teamId, saveToAccount = false) => {
       if (!bootstrap || !currentGW) return;
       try {
         const [entry, picks] = await Promise.all([
@@ -53,13 +57,18 @@ export function FPLProvider({ children }) {
           itbRaw: picks.entry_history?.bank ?? 0,
           transfersAvailable: picks.entry_history?.event_transfers_cost === 0 ? 1 : 0,
         });
+        // If signed in with Google and asked to save, persist the team ID
+        if (saveToAccount && googleUser) {
+          saveTeamToAccount(teamId).catch(() => {});
+          setGoogleUser((u) => ({ ...u, fplTeamId: String(teamId) }));
+        }
         return true;
       } catch (err) {
         console.error('Load team error:', err);
         throw new Error('Team not found. Check your Team ID and try again.');
       }
     },
-    [bootstrap, currentGW]
+    [bootstrap, currentGW, googleUser]
   );
 
   const clearTeam = useCallback(() => setUserTeam(null), []);
@@ -102,7 +111,6 @@ export function FPLProvider({ children }) {
     [fixtures, currentGW]
   );
 
-  // Returns 'blank' | 'double' | 'normal' for a team in a given GW
   const getGWType = useCallback(
     (teamId, gw) => {
       const count = fixtures.filter(
@@ -115,30 +123,20 @@ export function FPLProvider({ children }) {
     [fixtures]
   );
 
-  // Pre-computed blank & double GWs for the next 8 gameweeks
   const specialGWs = useMemo(() => {
     if (!bootstrap || !fixtures.length || !currentGW) return { blanks: {}, doubles: {} };
-
     const gwRange = Array.from({ length: 8 }, (_, i) => currentGW + i);
-    const blanks = {};  // { gw: [teamIds] }
-    const doubles = {}; // { gw: [teamIds] }
-
+    const blanks  = {};
+    const doubles = {};
     gwRange.forEach((gw) => {
       bootstrap.teams.forEach((team) => {
         const count = fixtures.filter(
           (f) => f.event === gw && (f.team_h === team.id || f.team_a === team.id)
         ).length;
-        if (count === 0) {
-          blanks[gw] = blanks[gw] || [];
-          blanks[gw].push(team.id);
-        }
-        if (count >= 2) {
-          doubles[gw] = doubles[gw] || [];
-          doubles[gw].push(team.id);
-        }
+        if (count === 0) { blanks[gw]  = blanks[gw]  || []; blanks[gw].push(team.id); }
+        if (count >= 2)  { doubles[gw] = doubles[gw] || []; doubles[gw].push(team.id); }
       });
     });
-
     return { blanks, doubles };
   }, [bootstrap, fixtures, currentGW]);
 
@@ -153,6 +151,7 @@ export function FPLProvider({ children }) {
         error,
         userTeam,
         currentGW,
+        googleUser,
         loadTeam,
         clearTeam,
         getPlayer,

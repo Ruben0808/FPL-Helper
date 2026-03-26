@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useFPL } from '../context/FPLContext';
+import { getLogoutUrl } from '../services/api';
 
 const navLinks = [
   { path: '/', label: 'Home' },
@@ -15,7 +16,7 @@ const navLinks = [
 
 export default function Navbar() {
   const location = useLocation();
-  const { userTeam } = useFPL();
+  const { userTeam, googleUser } = useFPL();
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
@@ -47,19 +48,35 @@ export default function Navbar() {
             ))}
           </div>
 
-          {/* Team badge — desktop only */}
+          {/* Team badge + Google user — desktop only */}
           <div className="hidden lg:flex items-center gap-3">
-            {userTeam ? (
+            {userTeam && (
               <div className="flex items-center gap-2 bg-fpl-green/20 border border-fpl-green/40 rounded-lg px-3 py-1.5">
                 <span className="w-2 h-2 rounded-full bg-fpl-green animate-pulse" />
                 <span className="text-fpl-green text-sm font-medium truncate max-w-[140px]">
                   {userTeam.entry.name}
                 </span>
               </div>
+            )}
+            {googleUser ? (
+              <div className="flex items-center gap-2">
+                {googleUser.picture ? (
+                  <img src={googleUser.picture} alt="" className="w-7 h-7 rounded-full" referrerPolicy="no-referrer" />
+                ) : (
+                  <div className="w-7 h-7 rounded-full bg-fpl-green flex items-center justify-center">
+                    <span className="text-fpl-purple font-black text-xs">{googleUser.name?.[0]}</span>
+                  </div>
+                )}
+                <a href={getLogoutUrl()} className="text-xs text-gray-400 hover:text-white transition-colors">
+                  Sign out
+                </a>
+              </div>
             ) : (
-              <Link to="/" className="text-sm text-gray-400 hover:text-fpl-green transition-colors">
-                Load your team →
-              </Link>
+              !userTeam && (
+                <Link to="/" className="text-sm text-gray-400 hover:text-fpl-green transition-colors">
+                  Load your team →
+                </Link>
+              )
             )}
           </div>
 
