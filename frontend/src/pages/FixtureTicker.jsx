@@ -164,7 +164,7 @@ export default function FixtureTicker() {
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-gray-100 bg-gray-50">
-              <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide sticky left-0 bg-gray-50 min-w-[140px]">
+              <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide sticky left-0 bg-gray-50 min-w-[100px] sm:min-w-[140px]">
                 Team
               </th>
               <th className="text-center px-2 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide w-16">
@@ -174,7 +174,7 @@ export default function FixtureTicker() {
                 const isBGW = (specialGWs.blanks[gw] || []).length > 0;
                 const isDGW = (specialGWs.doubles[gw] || []).length > 0;
                 return (
-                  <th key={gw} className={`text-center px-2 py-3 text-xs font-semibold uppercase tracking-wide min-w-[80px] ${
+                  <th key={gw} className={`text-center px-2 py-3 text-xs font-semibold uppercase tracking-wide min-w-[60px] sm:min-w-[80px] ${
                     isDGW ? 'text-fpl-green bg-fpl-purple/80' : isBGW ? 'text-yellow-300 bg-gray-700' : 'text-gray-500'
                   }`}>
                     GW{gw}
@@ -188,7 +188,7 @@ export default function FixtureTicker() {
           <tbody className="divide-y divide-gray-50">
             {sortedTeams.map(({ team, gwFixtures, avgDifficulty }) => (
               <tr key={team.id} className="hover:bg-gray-50 transition-colors">
-                <td className="px-4 py-3 sticky left-0 bg-white group-hover:bg-gray-50">
+                <td className="px-3 py-3 sticky left-0 bg-white group-hover:bg-gray-50 min-w-[100px] sm:min-w-[140px]">
                   <div className="flex items-center gap-2">
                     <span className="font-semibold text-gray-900">{team.name}</span>
                     <span className="text-xs text-gray-400">({team.short_name})</span>

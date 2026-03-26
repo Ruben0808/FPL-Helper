@@ -204,16 +204,16 @@ export default function Home() {
     <div>
       {/* Hero */}
       <div className="bg-fpl-purple text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-20 text-center">
           <div className="inline-flex items-center gap-2 bg-fpl-green/20 border border-fpl-green/40 rounded-full px-4 py-1.5 mb-6">
             <span className="w-2 h-2 rounded-full bg-fpl-green animate-pulse" />
             <span className="text-fpl-green text-sm font-medium">2025/26 Season • Live Data</span>
           </div>
 
-          <h1 className="text-5xl md:text-7xl font-black mb-4 leading-tight">
+          <h1 className="text-4xl sm:text-5xl md:text-7xl font-black mb-4 leading-tight">
             <span className="text-fpl-green">FPL</span> Helper
           </h1>
-          <p className="text-xl md:text-2xl text-gray-300 font-light mb-2">
+          <p className="text-lg sm:text-xl md:text-2xl text-gray-300 font-light mb-2">
             Your data-driven Fantasy Premier League assistant
           </p>
           <p className="text-gray-400 max-w-xl mx-auto mb-10">

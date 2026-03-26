@@ -171,7 +171,7 @@ export default function PriceChanges() {
               <th className="text-center px-3 py-3">Pos</th>
               <th className="text-center px-3 py-3 hidden sm:table-cell">Status</th>
               <th className="text-right px-3 py-3">Current Price</th>
-              <th className="text-right px-3 py-3">Start Price</th>
+              <th className="text-right px-3 py-3 hidden sm:table-cell">Start Price</th>
               <th className="text-right px-3 py-3">Season Change</th>
               <th className="text-right px-4 py-3">GW Change</th>
             </tr>
@@ -209,7 +209,7 @@ export default function PriceChanges() {
                   <td className="px-3 py-3 text-right font-bold text-fpl-purple">
                     {formatPrice(player.now_cost)}
                   </td>
-                  <td className="px-3 py-3 text-right text-gray-500">
+                  <td className="px-3 py-3 text-right text-gray-500 hidden sm:table-cell">
                     {formatPrice(startPrice)}
                   </td>
                   <td className="px-3 py-3 text-right">

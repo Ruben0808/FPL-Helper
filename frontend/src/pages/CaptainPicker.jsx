@@ -82,20 +82,20 @@ export default function CaptainPicker() {
 
       {/* Top 3 podium */}
       {scoredPlayers.length >= 3 && (
-        <div className="grid grid-cols-3 gap-3 mb-8">
+        <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-8">
           {scoredPlayers.slice(0, 3).map(({ player, nextFixture, score }, idx) => {
             const team = getTeam(player.team);
             const opp = nextFixture ? getTeam(nextFixture.opponent) : null;
             return (
               <div
                 key={player.id}
-                className={`rounded-2xl border-2 bg-gradient-to-b p-4 text-center ${rankColors[idx]} ${idx === 0 ? 'scale-105 shadow-lg' : ''}`}
+                className={`rounded-xl sm:rounded-2xl border-2 bg-gradient-to-b p-2 sm:p-4 text-center ${rankColors[idx]} ${idx === 0 ? 'sm:scale-105 shadow-lg' : ''}`}
               >
-                <div className="text-4xl mb-2">{medals[idx]}</div>
+                <div className="text-2xl sm:text-4xl mb-1 sm:mb-2">{medals[idx]}</div>
                 <span className={`text-xs font-black px-2 py-0.5 rounded-full mb-2 inline-block ${positionColors[player.element_type]}`}>
                   {positionNames[player.element_type]}
                 </span>
-                <h3 className="font-black text-gray-900 text-lg leading-tight mb-0.5">{player.web_name}</h3>
+                <h3 className="font-black text-gray-900 text-sm sm:text-lg leading-tight mb-0.5">{player.web_name}</h3>
                 <p className="text-xs text-gray-500 mb-3">{team?.name}</p>
 
                 <div className="grid grid-cols-2 gap-1.5 mb-3">

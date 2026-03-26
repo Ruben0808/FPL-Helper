@@ -246,7 +246,7 @@ export default function PlayerScout() {
               <th className="text-center px-3 py-3 font-semibold">Status</th>
               <th className="text-right px-3 py-3 font-semibold cursor-pointer hover:text-fpl-purple" onClick={() => handleSort('now_cost')}>Price</th>
               <th className="text-right px-3 py-3 font-semibold cursor-pointer hover:text-fpl-purple" onClick={() => handleSort('form')}>Form</th>
-              <th className="text-right px-3 py-3 font-semibold cursor-pointer hover:text-fpl-purple" onClick={() => handleSort('points_per_game')}>Pts/G</th>
+              <th className="text-right px-3 py-3 font-semibold cursor-pointer hover:text-fpl-purple hidden sm:table-cell" onClick={() => handleSort('points_per_game')}>Pts/G</th>
               <th className="text-right px-3 py-3 font-semibold cursor-pointer hover:text-fpl-purple" onClick={() => handleSort('total_points')}>Pts</th>
               <th className="text-right px-3 py-3 font-semibold hidden md:table-cell cursor-pointer hover:text-fpl-purple" onClick={() => handleSort('ep_next')}>Exp Pts</th>
               <th className="text-right px-3 py-3 font-semibold hidden md:table-cell cursor-pointer hover:text-fpl-purple" onClick={() => handleSort('value_score')}>Value</th>
@@ -293,7 +293,7 @@ export default function PlayerScout() {
                   <td className={`px-3 py-3 text-right font-semibold ${formColor}`}>
                     {form.toFixed(1)}
                   </td>
-                  <td className="px-3 py-3 text-right text-gray-700">
+                  <td className="px-3 py-3 text-right text-gray-700 hidden sm:table-cell">
                     {parseFloat(player.points_per_game).toFixed(1)}
                   </td>
                   <td className="px-3 py-3 text-right font-bold text-gray-900">
